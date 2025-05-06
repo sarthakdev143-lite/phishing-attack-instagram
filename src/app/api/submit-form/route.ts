@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json({ success: true }, { status: 201 });
-    } catch (error: any) {
+    } catch (error) {
         console.error("🚨 Error in /api/submit-form:", error);
         return NextResponse.json(
             { success: false, error: "Server error" },

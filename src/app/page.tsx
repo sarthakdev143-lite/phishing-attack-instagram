@@ -167,7 +167,7 @@ export default function InstagramLogin() {
         {/* Sign Up Card */}
         <div className="w-full border border-gray-300 p-7.5 mb-4 flex justify-center">
           <p className="text-base">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href="#" className="text-[#0095F6] font-semibold ml-1 text-[1.2rem]">
               Sign up
             </Link>
