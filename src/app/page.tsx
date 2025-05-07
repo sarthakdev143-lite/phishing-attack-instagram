@@ -104,13 +104,21 @@ export default function InstagramLogin() {
 
           <form className="w-full space-y-2 mt-2" onSubmit={handleSubmit}>
             <div className="relative">
-              <label htmlFor="username" className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400">Phone number, username, or email</label>
+              <label
+                htmlFor="username"
+                className={`absolute left-3 text-gray-400 transition-all duration-200
+            ${formData.username ? "top-1 text-[0.8rem]" : "top-1/2 -translate-y-1/2 text-base"}
+          `}
+              >
+                Phone number, username, or email
+              </label>
               <input
                 id="username"
                 type="text"
                 name="username"
+                value={formData.username}
                 onChange={handleChange}
-                className="w-full h-13 text-base bg-[#FAFAFA] dark:bg-[#121212] border border-gray-200 dark:border-gray-600 px-3 py-2 focus:border-gray-300 dark:focus:border-gray-500 focus-visible:outline-none"
+                className={`w-full h-[3.2rem] text-base bg-[#FAFAFA] dark:bg-[#121212] border border-gray-200 dark:border-gray-600 px-2 ${formData.username ? "pt-4" : "pt-1"} pb-1 focus:border-gray-300 dark:focus:border-gray-500 focus-visible:outline-none`}
               />
               {errors.username && (
                 <p aria-live="polite" className="text-red-500 text-base -translate-y-1.5">
@@ -120,13 +128,20 @@ export default function InstagramLogin() {
             </div>
 
             <div className="relative">
-              <label htmlFor="password" className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400">Password</label>
+              <label
+                htmlFor="password"
+                className={`absolute left-3 text-gray-400 transition-all duration-200
+            ${formData.password ? "top-1 text-[0.8rem]" : "top-1/2 -translate-y-1/2 text-base"}
+          `}
+              >
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
                 name="password"
                 onChange={handleChange}
-                className="w-full h-13 text-base bg-gray-50 dark:bg-[#121212] border border-gray-200 dark:border-gray-600 px-2 py-2 focus:border-gray-300 dark:focus:border-gray-500 focus-visible:outline-none"
+                className={`w-full h-[3.2rem] text-base bg-[#FAFAFA] dark:bg-[#121212] border border-gray-200 dark:border-gray-600 px-2 ${formData.password ? "pt-4" : "pt-1"} pb-1 focus:border-gray-300 dark:focus:border-gray-500 focus-visible:outline-none`}
               />
               {errors.password && (
                 <p aria-live="polite" className="text-red-500 text-base -translate-y-1.5">
