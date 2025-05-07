@@ -96,7 +96,7 @@ export default function InstagramLogin() {
             <Image
               src="/ig-logo.png"
               alt="Instagram"
-              className="mix-blend-difference invert"
+              className="mix-blend-difference invert w-[14.5rem]"
               width={175}
               height={100}
             />
@@ -106,7 +106,7 @@ export default function InstagramLogin() {
             <div className="relative">
               <label
                 htmlFor="username"
-                className={`absolute left-3 text-gray-400 transition-all duration-200
+                className={`absolute left-3 text-gray-400 transition-all duration-200 truncate max-w-full pr-5
             ${formData.username ? "top-1 text-[0.8rem]" : "top-1/2 -translate-y-1/2 text-base"}
           `}
               >
@@ -197,14 +197,14 @@ export default function InstagramLogin() {
               alt="Facebook"
               width={20}
               height={20}
-              className="inline-block mr-3 brightness-110"
+              className="inline-block mr-3 brightness-110 w-[1.675rem]"
             />
             Log in with Facebook
           </Link>
 
           <Link
             href="#"
-            className="text-blue-900 dark:text-blue-300 text-[1.2rem] font-normal mb-4 mt-1"
+            className="text-blue-900 dark:text-blue-100 text-[1.2rem] font-normal mb-4 mt-1"
           >
             Forgot password?
           </Link>
