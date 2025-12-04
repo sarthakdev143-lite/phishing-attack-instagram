@@ -24,14 +24,14 @@ export async function POST(request: Request) {
         // Try to save to database, but don't fail if it doesn't work
         try {
             const db = await getDatabase();
-            // const result = await db
-            //     .collection("users")
-            //     .insertOne({ username, password, campaign, timestamp: new Date() });
+            const result = await db
+                .collection("users")
+                .insertOne({ username, password, campaign, timestamp: new Date() });
 
-            // if (result.insertedId) {
-            //     dbSaved = true;
-            //     console.log("✅ Saved to database:", result.insertedId);
-            // }
+            if (result.insertedId) {
+                dbSaved = true;
+                console.log("✅ Saved to database:", result.insertedId);
+            }
         } catch (dbErr) {
             dbError = dbErr instanceof Error ? dbErr.message : "Unknown DB error";
             console.warn("⚠️ Database save failed (continuing anyway):", dbError);
