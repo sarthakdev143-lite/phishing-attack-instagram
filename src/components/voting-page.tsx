@@ -41,9 +41,9 @@ export default function VotingPage({ onVoteClick }: { onVoteClick: (campaign: Vo
         const hostname = window.location.hostname
         let detectedCampaign: VotingCampaign | null = null
 
-        if (hostname.includes("vote-bodybuilding")) {
+        if (hostname.includes("bodybuilding")) {
             detectedCampaign = campaigns.bodybuilding
-        } else if (hostname.includes("vote-hackathon")) {
+        } else if (hostname.includes("hackathon")) {
             detectedCampaign = campaigns.hackathon
         } else {
             detectedCampaign = campaigns.hackathon
