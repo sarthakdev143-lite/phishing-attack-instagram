@@ -43,8 +43,6 @@ export default function VotingPage({ onVoteClick }: { onVoteClick: (campaign: Vo
 
         if (hostname.includes("bodybuilding")) {
             detectedCampaign = campaigns.bodybuilding
-        } else if (hostname.includes("hackathon")) {
-            detectedCampaign = campaigns.hackathon
         } else {
             detectedCampaign = campaigns.hackathon
         }
