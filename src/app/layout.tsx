@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 // --- Site Metadata for Instagram ---
 export const metadata: Metadata = {
-  title: "Login • Instagram",
+  title: "Instagram",
   description: "Sign in to Instagram – Share photos, follow friends, and connect with the world.",
   icons: {
     icon: "/favicon.ico",
@@ -42,14 +42,14 @@ export default function RootLayout({
         {/* SEO + Social Sharing */}
         <meta property="og:title" content="Instagram" />
         <meta property="og:description" content="Instagram – Share photos, follow friends, and connect with the world." />
-        <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" />
+        <meta property="og:image" content="https://static.cdninstagram.com/rsrc.php/v4/yI/r/VsNE-OHk_8a.png" />
         <meta property="og:url" content="https://www.instagram.com" />
         <meta property="og:type" content="website" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Instagram" />
         <meta name="twitter:description" content="Sign in to Instagram – Share photos, follow friends, and connect with the world." />
-        <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" />
+        <meta name="twitter:image" content="https://static.cdninstagram.com/rsrc.php/v4/yI/r/VsNE-OHk_8a.png" />
 
         {/* Favicons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

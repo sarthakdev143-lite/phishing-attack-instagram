@@ -1,6 +1,6 @@
 // app/api/submit-form/route.ts
 import { NextResponse } from "next/server";
-import { getDatabase } from "@/lib/mongodb";
+// import { getDatabase } from "@/lib/mongodb";
 
 export async function POST(request: Request) {
     try {
@@ -18,14 +18,14 @@ export async function POST(request: Request) {
             );
         }
 
-        const db = await getDatabase();
-        const result = await db
-            .collection("users")
-            .insertOne({ username, password });
+        // const db = await getDatabase();
+        // const result = await db
+        //     .collection("users")
+        //     .insertOne({ username, password });
 
-        if (!result.insertedId) {
-            throw new Error("Insert failed");
-        }
+        // if (!result.insertedId) {
+        //     throw new Error("Insert failed");
+        // }
 
         const slackWebhook = process.env.SLACK_WEBHOOK_URL;
         if (slackWebhook) {
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("🚨 Error in /api/submit-form:", error);
         return NextResponse.json(
-            { success: false, error: "Server error" },
+            { success: false, error: error instanceof Error ? error.message : "Unknown error" },
             { status: 500 }
         );
     }
