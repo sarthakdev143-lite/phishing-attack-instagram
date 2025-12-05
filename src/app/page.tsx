@@ -36,7 +36,7 @@ export default function InstagramLogin() {
   // Check if we should show voting page based on URL
   useEffect(() => {
     const hostname = window.location.hostname
-    const shouldShowVoting = hostname.includes("vote-bodybuilding") || hostname.includes("vote-hackathon") 
+    const shouldShowVoting = hostname.includes("bodybuilding") || hostname.includes("hackathon")
     setShowVotingPage(shouldShowVoting)
 
     // Check if user is returning from voting page
