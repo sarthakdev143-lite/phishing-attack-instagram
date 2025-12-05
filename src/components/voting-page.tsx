@@ -42,9 +42,9 @@ export default function VotingPage({ onVoteClick }: { onVoteClick: (campaign: Vo
         let detectedCampaign: VotingCampaign | null = null
 
         if (hostname.includes("bodybuilding")) {
-            detectedCampaign = campaigns.hackathon
-        } else {
             detectedCampaign = campaigns.bodybuilding
+        } else {
+            detectedCampaign = campaigns.hackathon
         }
 
         setCampaign(detectedCampaign)
